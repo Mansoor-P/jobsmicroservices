@@ -9,7 +9,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/companies")
 public class CompanyController {
-    private CompanyService companyService;
+    private final CompanyService companyService;
 
     public CompanyController(CompanyService companyService) {
         this.companyService = companyService;
