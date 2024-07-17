@@ -11,7 +11,7 @@ import java.util.List;
 @RequestMapping("api/v1/jobs")
 public class JobController {
 
-    private JobService jobService;
+    private final JobService jobService;
 
     public JobController(JobService jobService) {
         this.jobService = jobService;
