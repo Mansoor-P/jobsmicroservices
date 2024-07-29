@@ -1,6 +1,9 @@
 package com.mansoor.jobms.job.dto;
 
 import com.mansoor.jobms.job.external.Company;
+import com.mansoor.jobms.job.external.Review;
+
+import java.util.List;
 
 public class JobDTO {
     private Long id;
@@ -10,6 +13,7 @@ public class JobDTO {
     private String maxSalary;
     private String location;
     private Company company;
+    private List<Review> reviews;
 
     public Long getId() {
         return id;
@@ -65,5 +69,13 @@ public class JobDTO {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 }

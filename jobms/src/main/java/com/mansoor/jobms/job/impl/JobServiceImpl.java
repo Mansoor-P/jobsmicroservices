@@ -6,11 +6,17 @@ import com.mansoor.jobms.job.JobRepository;
 import com.mansoor.jobms.job.JobService;
 import com.mansoor.jobms.job.dto.JobDTO;
 import com.mansoor.jobms.job.external.Company;
+import com.mansoor.jobms.job.external.Review;
 import com.mansoor.jobms.job.mapper.JobMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -38,9 +44,21 @@ public class JobServiceImpl implements JobService {
     }
 
     private JobDTO convertToDto(Job job) {
-        Company company = restTemplate.getForObject("http://COMPANY-SERVICE:8081/api/v1/companies/" + job.getCompanyId(), Company.class);
-        JobDTO jobDTO = JobMapper.mapToJobWithCompanyDto(job, company);
-        jobDTO.setCompany(company);
+        Company company = restTemplate.getForObject(
+                "http://COMPANY-SERVICE:8081/api/v1/companies/" + job.getCompanyId(),
+                Company.class);
+
+        ResponseEntity<List<Review>> reviewResponse = restTemplate.exchange(
+                "http://REVIEW-SERVICE:8083/api/v1/reviews?companyId=" + job.getCompanyId(),
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Review>>() {
+                });
+
+        List<Review> reviews = reviewResponse.getBody();
+
+        JobDTO jobDTO = JobMapper.mapToJobWithCompanyDto(job, company,reviews);
+//        jobDTO.setCompany(company);
         return jobDTO;
 
     }
