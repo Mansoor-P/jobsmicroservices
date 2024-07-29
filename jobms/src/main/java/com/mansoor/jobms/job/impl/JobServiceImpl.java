@@ -4,7 +4,7 @@ package com.mansoor.jobms.job.impl;
 import com.mansoor.jobms.job.Job;
 import com.mansoor.jobms.job.JobRepository;
 import com.mansoor.jobms.job.JobService;
-import com.mansoor.jobms.job.dto.JobWithCompanyDTO;
+import com.mansoor.jobms.job.dto.JobDTO;
 import com.mansoor.jobms.job.external.Company;
 import com.mansoor.jobms.job.mapper.JobMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,20 +28,20 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public List<JobWithCompanyDTO> findAll() {
+    public List<JobDTO> findAll() {
 
         List<Job> jobs = jobRepository.findAll();
-        List<JobWithCompanyDTO> jobWithCompanyDTOs = new ArrayList<>();
+        List<JobDTO> jobDTOS = new ArrayList<>();
 
 
         return jobs.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
-    private JobWithCompanyDTO convertToDto(Job job) {
+    private JobDTO convertToDto(Job job) {
         Company company = restTemplate.getForObject("http://COMPANY-SERVICE:8081/api/v1/companies/" + job.getCompanyId(), Company.class);
-        JobWithCompanyDTO jobWithCompanyDTO = JobMapper.mapToJobWithCompanyDto(job, company);
-        jobWithCompanyDTO.setCompany(company);
-        return jobWithCompanyDTO;
+        JobDTO jobDTO = JobMapper.mapToJobWithCompanyDto(job, company);
+        jobDTO.setCompany(company);
+        return jobDTO;
 
     }
 
@@ -52,7 +52,7 @@ public class JobServiceImpl implements JobService {
 
 
     @Override
-    public JobWithCompanyDTO getJobById(Long id) {
+    public JobDTO getJobById(Long id) {
         Job job = jobRepository.findById(id).orElse(null);
         return convertToDto(job);
     }

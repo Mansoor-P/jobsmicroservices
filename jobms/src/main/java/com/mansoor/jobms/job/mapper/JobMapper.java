@@ -1,22 +1,22 @@
 package com.mansoor.jobms.job.mapper;
 
 import com.mansoor.jobms.job.Job;
-import com.mansoor.jobms.job.dto.JobWithCompanyDTO;
+import com.mansoor.jobms.job.dto.JobDTO;
 import com.mansoor.jobms.job.external.Company;
 
 public class JobMapper {
-    public static JobWithCompanyDTO mapToJobWithCompanyDto(Job job, Company company) {
-        JobWithCompanyDTO jobWithCompanyDTO=new JobWithCompanyDTO();
+    public static JobDTO mapToJobWithCompanyDto(Job job, Company company) {
+        JobDTO jobDTO =new JobDTO();
 
-        jobWithCompanyDTO.setId(job.getId());
-        jobWithCompanyDTO.setTitle(job.getTitle());
-        jobWithCompanyDTO.setDescription(job.getDescription());
-        jobWithCompanyDTO.setLocation(job.getLocation());
-        jobWithCompanyDTO.setMaxSalary(job.getMaxSalary());
-        jobWithCompanyDTO.setMinSalary(job.getMinSalary());
-        jobWithCompanyDTO.setCompany(company);
+        jobDTO.setId(job.getId());
+        jobDTO.setTitle(job.getTitle());
+        jobDTO.setDescription(job.getDescription());
+        jobDTO.setLocation(job.getLocation());
+        jobDTO.setMaxSalary(job.getMaxSalary());
+        jobDTO.setMinSalary(job.getMinSalary());
+        jobDTO.setCompany(company);
 
-        return jobWithCompanyDTO;
+        return jobDTO;
     }
 
 }

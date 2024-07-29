@@ -1,16 +1,15 @@
 package com.mansoor.jobms.job.dto;
 
-import com.mansoor.jobms.job.Job;
 import com.mansoor.jobms.job.external.Company;
 
-public class JobWithCompanyDTO {
+public class JobDTO {
     private Long id;
     private String title;
     private String Description;
     private String minSalary;
     private String maxSalary;
     private String location;
-   private Company company;
+    private Company company;
 
     public Long getId() {
         return id;
