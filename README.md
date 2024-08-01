@@ -1,8 +1,7 @@
-# Job Companies and Reviews REST API
-
+# Job Companies and Reviews Microservices Architechture
 ## Overview
 
-This REST API is designed to manage job listings and reviews for various companies. It follows a monolithic architecture and is built using modern development practices to ensure scalability and maintainability. The API provides endpoints for managing companies, jobs, and reviews associated with those companies.
+This REST API (Architechture) is designed to manage job listings and reviews for various companies. It follows a microservices architecture and is built using modern development practices to ensure scalability and maintainability. The API provides endpoints for managing companies, jobs, and reviews associated with those companies.
 
 ## Table of Contents
 
@@ -30,6 +29,7 @@ This REST API is designed to manage job listings and reviews for various compani
 
 - **Java**: The primary programming language.
 - **Spring Boot**: For building the REST API.
+- **Spring Cloud Netflix Eureka**: For service registry and discovery.
 - **H2-Database**: For in-memory testing purposes.
 - **MySQL/PostgreSQL**: For the relational database.
 - **JPA/Hibernate**: For ORM (Object-Relational Mapping).
@@ -38,7 +38,14 @@ This REST API is designed to manage job listings and reviews for various compani
 
 ## Architecture
 
-This project uses a monolithic architecture where all components of the application are contained within a single codebase. This design is suitable for smaller applications but can be scaled by splitting into microservices if needed in the future.
+This project uses a microservices architecture where each service is responsible for a specific domain. The services communicate with each other using REST APIs and are registered with a service registry for dynamic discovery.
+
+### Services
+
+- **Company Service**: Manages company-related operations.
+- **Job Service**: Manages job-related operations.
+- **Review Service**: Manages review-related operations.
+- **Service Registry**: Handles service registration and discovery.
 
 ## Getting Started
 
@@ -56,29 +63,44 @@ This project uses a monolithic architecture where all components of the applicat
    cd jobsmicroservices
    ```
 
-2. **Configure the database:**
-  - Update the `application.properties` file in the `src/main/resources` directory with your database credentials.
+2. **Configure the databases for each service:**
+  - Update the `application.properties` file in the `src/main/resources` directory of each service with your database credentials.
+
+   Example for `company-service`:
    ```properties
    # Example for MySQL
-   spring.datasource.url=jdbc:mysql://localhost:3306/yourdatabase
+   spring.datasource.url=jdbc:mysql://localhost:3306/companydb
    spring.datasource.username=yourusername
    spring.datasource.password=yourpassword
    spring.jpa.hibernate.ddl-auto=update
 
    # Example for PostgreSQL
-   spring.datasource.url=jdbc:postgresql://localhost:5432/yourdatabase
+   spring.datasource.url=jdbc:postgresql://localhost:5432/companydb
    spring.datasource.username=yourusername
    spring.datasource.password=yourpassword
    spring.jpa.hibernate.ddl-auto=update
    ```
 
-3. **Build the project:**
+3. **Build each service:**
    ```sh
    mvn clean install
    ```
 
-4. **Run the application:**
+4. **Run the service registry:**
    ```sh
+   cd service-registry
+   mvn spring-boot:run
+   ```
+
+5. **Run each service:**
+   ```sh
+   cd company-service
+   mvn spring-boot:run
+
+   cd ../job-service
+   mvn spring-boot:run
+
+   cd ../review-service
    mvn spring-boot:run
    ```
 
@@ -330,7 +352,9 @@ This project uses a monolithic architecture where all components of the applicat
   ```json
   [
     {
-      "id": 1,
+      "id
+
+": 1,
       "rating": 5,
       "comment": "Great company to work for!",
       "companyId": 1
@@ -356,27 +380,25 @@ This project uses a monolithic architecture where all components of the applicat
   ```
 
 - **Update Review:**
-
-
- ```http
+  ```http
   PUT /api/v1/reviews/{reviewId}
   ```
-Updates the details of a specific review by its ID.
+  Updates the details of a specific review by its ID.
 
-**Request Body:**
+  **Request Body:**
   ```json
   {
     "rating": 4,
-    "comment": "Good company with some areas for improvement."
+    "comment": "Good company to work for."
   }
   ```
 
-**Response:**
+  **Response:**
   ```json
   {
     "id": 1,
     "rating": 4,
-    "comment": "Good company with some areas for improvement.",
+    "comment": "Good company to work for.",
     "companyId": 1
   }
   ```
