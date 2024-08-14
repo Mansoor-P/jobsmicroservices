@@ -11,6 +11,7 @@ import com.mansoor.jobms.job.external.Company;
 import com.mansoor.jobms.job.external.Review;
 import com.mansoor.jobms.job.mapper.JobMapper;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -31,8 +32,9 @@ public class JobServiceImpl implements JobService {
     public RestTemplate restTemplate;
 
     private CompanyClient companyClient;
-
     private ReviewClient reviewClient;
+
+    int attempt = 0;
 
     public JobServiceImpl(JobRepository jobRepository, CompanyClient companyClient, ReviewClient reviewClient) {
         this.jobRepository = jobRepository;
@@ -41,9 +43,10 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    @CircuitBreaker(name = "companyBreaker",
-            fallbackMethod = "companyBreakerFallback")
+//    @CircuitBreaker(name = "companyBreaker", fallbackMethod = "companyBreakerFallback")
+    @Retry(name = "companyBreaker", fallbackMethod = "companyBreakerFallback")
     public List<JobDTO> findAll() {
+        System.out.println("Attempt: " + ++attempt);
 
         List<Job> jobs = jobRepository.findAll();
         List<JobDTO> jobDTOS = new ArrayList<>();
@@ -53,7 +56,6 @@ public class JobServiceImpl implements JobService {
 
     public List<String> companyBreakerFallback(Exception e) {
         List<String> list = new ArrayList<>();
-
         list.add("Dummy Error");
         return list;
     }
