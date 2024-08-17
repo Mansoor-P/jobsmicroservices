@@ -1,5 +1,7 @@
 package com.mansoor.companyms.company;
 
+import com.mansoor.companyms.company.dto.ReviewMessage;
+
 import java.util.List;
 
 public interface CompanyService {
@@ -13,4 +15,6 @@ public interface CompanyService {
     boolean deleteCompanyById(Long id);
 
     Company getCompanyById(Long id);
+
+    public void updateCompanyRating(ReviewMessage reviewMessage);
 }

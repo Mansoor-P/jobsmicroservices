@@ -1,7 +1,19 @@
-# Job Companies and Reviews Microservices Architechture
+
+# Job Companies and Reviews Microservices Architecture
+
+![Java](https://img.shields.io/badge/Java-17-007396?logo=java&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3.2-brightgreen?logo=spring-boot)
+![Maven](https://img.shields.io/badge/Maven-3.8.1-C71A36?logo=apache-maven)
+![Docker](https://img.shields.io/badge/Docker-20.10.7-blue?logo=docker)
+![MySQL](https://img.shields.io/badge/MySQL-8.0.25-4479A1?logo=mysql&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-13.4-336791?logo=postgresql&logoColor=white)
+![RabbitMQ](https://img.shields.io/badge/RabbitMQ-3.8.16-FF6600?logo=rabbitmq)
+![Zipkin](https://img.shields.io/badge/Zipkin-2.23.2-5C5C5C?logo=zipkin)
+![License](https://img.shields.io/badge/License-MIT-blue)
+
 ## Overview
 
-This REST API (Architechture) is designed to manage job listings and reviews for various companies. It follows a microservices architecture and is built using modern development practices to ensure scalability and maintainability. The API provides endpoints for managing companies, jobs, and reviews associated with those companies.
+This REST API is designed to manage job listings and reviews for various companies, utilizing a microservices architecture. Built with modern development practices, the API ensures scalability, maintainability, and fault tolerance, offering comprehensive endpoints for managing companies, jobs, and associated reviews.
 
 ## Table of Contents
 
@@ -9,51 +21,60 @@ This REST API (Architechture) is designed to manage job listings and reviews for
 - [Technologies Used](#technologies-used)
 - [Architecture](#architecture)
 - [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
 - [API Endpoints](#api-endpoints)
-  - [Company Endpoints](#company-endpoints)
-  - [Job Endpoints](#job-endpoints)
-  - [Review Endpoints](#review-endpoints)
-- [Database Schema](#database-schema)
+    - [Company Endpoints](#company-endpoints)
+    - [Job Endpoints](#job-endpoints)
+    - [Review Endpoints](#review-endpoints)
+- [Deployment](#deployment)
 - [Contributing](#contributing)
 - [License](#license)
 
 ## Features
 
-- **Company Management**: Create, read, update, and delete companies.
-- **Job Management**: Create, read, update, and delete jobs for a company.
-- **Review Management**: Create, read, update, and delete reviews for a company.
+- **Company Management**: CRUD operations for companies.
+- **Job Management**: CRUD operations for jobs within a company.
+- **Review Management**: CRUD operations for reviews related to a company.
+- **Service Discovery**: Seamless service registration and discovery using Eureka.
+- **Load Balancing**: Intelligent routing and load balancing with Spring Cloud.
+- **Fault Tolerance**: Resilient microservices with retry mechanisms and circuit breakers.
+- **Distributed Tracing**: Integrated Zipkin for monitoring and tracing.
 
 ## Technologies Used
 
-- **Java**: The primary programming language.
-- **Spring Boot**: For building the REST API.
-- **Spring Cloud Netflix Eureka**: For service registry and discovery.
-- **H2-Database**: For in-memory testing purposes.
-- **MySQL/PostgreSQL**: For the relational database.
-- **JPA/Hibernate**: For ORM (Object-Relational Mapping).
-- **Maven**: For project management and dependency management.
-- **Lombok**: To reduce boilerplate code.
+- **Java 17**: Primary programming language.
+- **Spring Boot**: Framework for building robust and scalable REST APIs.
+- **Spring Cloud Netflix Eureka**: Service registry and discovery.
+- **Spring Cloud Gateway**: API Gateway for routing and filtering requests.
+- **RabbitMQ**: Message broker for asynchronous communication.
+- **MySQL/PostgreSQL**: Relational database management.
+- **H2 Database**: In-memory database for development and testing.
+- **JPA/Hibernate**: ORM for database interactions.
+- **Maven**: Dependency management and build automation.
+- **Lombok**: Simplifies Java code by reducing boilerplate.
+- **Docker**: Containerization for consistent environments.
+- **Zipkin**: Distributed tracing for monitoring microservices.
 
 ## Architecture
 
-This project uses a microservices architecture where each service is responsible for a specific domain. The services communicate with each other using REST APIs and are registered with a service registry for dynamic discovery.
+The system is composed of independent microservices, each responsible for a specific domain:
 
-### Services
-
-- **Company Service**: Manages company-related operations.
-- **Job Service**: Manages job-related operations.
-- **Review Service**: Manages review-related operations.
-- **Service Registry**: Handles service registration and discovery.
+- **Company Service**: Handles company-related operations, including company details and job associations.
+- **Job Service**: Manages job listings, including job creation, updates, and associations with companies.
+- **Review Service**: Manages user reviews of companies, integrating with job data.
+- **Service Registry**: Manages dynamic service registration and discovery using Eureka.
+- **API Gateway**: Routes external requests to the appropriate microservice, handling load balancing and security.
+- **RabbitMQ**: Enables asynchronous communication between services, enhancing scalability and resilience.
 
 ## Getting Started
 
 ### Prerequisites
 
-- Java 22 
+- Java 17
 - Maven
-- H2-Database or MySQL or PostgreSQL database
+- MySQL or PostgreSQL (for persistent storage)
+- Docker (optional, for containerized deployments)
 
 ### Installation
 
@@ -63,38 +84,23 @@ This project uses a microservices architecture where each service is responsible
    cd jobsmicroservices
    ```
 
-2. **Configure the databases for each service:**
-  - Update the `application.properties` file in the `src/main/resources` directory of each service with your database credentials.
+2. **Configure the databases:**
+   Update the `application.properties` or `application.yml` files in each service with your database credentials.
 
-   Example for `company-service`:
-   ```properties
-   # Example for MySQL
-   spring.datasource.url=jdbc:mysql://localhost:3306/companydb
-   spring.datasource.username=yourusername
-   spring.datasource.password=yourpassword
-   spring.jpa.hibernate.ddl-auto=update
-
-   # Example for PostgreSQL
-   spring.datasource.url=jdbc:postgresql://localhost:5432/companydb
-   spring.datasource.username=yourusername
-   spring.datasource.password=yourpassword
-   spring.jpa.hibernate.ddl-auto=update
-   ```
-
-3. **Build each service:**
+3. **Build and package each service:**
    ```sh
    mvn clean install
    ```
 
-4. **Run the service registry:**
+4. **Start the Service Registry:**
    ```sh
    cd service-registry
    mvn spring-boot:run
    ```
 
-5. **Run each service:**
+5. **Start the microservices:**
    ```sh
-   cd company-service
+   cd ../company-service
    mvn spring-boot:run
 
    cd ../job-service
@@ -104,353 +110,50 @@ This project uses a microservices architecture where each service is responsible
    mvn spring-boot:run
    ```
 
+6. **Run API Gateway and other services as needed.**
+
+## Deployment
+
+To deploy the microservices architecture, Docker can be used for containerization. Alternatively, you can deploy each service to your cloud provider of choice (e.g., AWS, Azure, GCP).
+
+- **Docker Compose**: Consider using Docker Compose for local deployment. Define services, networks, and volumes to manage the entire stack.
+
 ## API Endpoints
 
 ### Company Endpoints
 
-- **Create Company:**
-  ```http
-  POST /api/v1/companies
-  ```
-  Creates a new company.
-
-  **Request Body:**
-  ```json
-  {
-    "name": "Company Name",
-    "address": "Company Address",
-    "email": "company@example.com"
-  }
-  ```
-
-  **Response:**
-  ```json
-  {
-    "id": 1,
-    "name": "Company Name",
-    "address": "Company Address",
-    "email": "company@example.com"
-  }
-  ```
-
-- **Get All Companies:**
-  ```http
-  GET /api/v1/companies
-  ```
-  Retrieves a list of all companies.
-
-  **Response:**
-  ```json
-  [
-    {
-      "id": 1,
-      "name": "Company Name",
-      "address": "Company Address",
-      "email": "company@example.com"
-    },
-    ...
-  ]
-  ```
-
-- **Get Company by ID:**
-  ```http
-  GET /api/v1/companies/{companyId}
-  ```
-  Retrieves the details of a specific company by its ID.
-
-  **Response:**
-  ```json
-  {
-    "id": 1,
-    "name": "Company Name",
-    "address": "Company Address",
-    "email": "company@example.com"
-  }
-  ```
-
-- **Update Company:**
-  ```http
-  PUT /api/v1/companies/{companyId}
-  ```
-  Updates the details of a specific company by its ID.
-
-  **Request Body:**
-  ```json
-  {
-    "name": "Updated Company Name",
-    "address": "Updated Company Address",
-    "email": "updated@example.com"
-  }
-  ```
-
-  **Response:**
-  ```json
-  {
-    "id": 1,
-    "name": "Updated Company Name",
-    "address": "Updated Company Address",
-    "email": "updated@example.com"
-  }
-  ```
-
-- **Delete Company:**
-  ```http
-  DELETE /api/v1/companies/{companyId}
-  ```
-  Deletes a specific company by its ID.
-
-  **Response:**
-  ```json
-  {
-    "message": "Company deleted successfully."
-  }
-  ```
+- `GET /companies`: Retrieve all companies.
+- `POST /companies`: Create a new company.
+- `GET /companies/{id}`: Retrieve details of a specific company.
+- `PUT /companies/{id}`: Update a company's details.
+- `DELETE /companies/{id}`: Delete a company.
 
 ### Job Endpoints
 
-- **Create Job:**
-  ```http
-  POST /api/v1/companies/{companyId}/jobs
-  ```
-  Creates a new job for a specific company.
-
-  **Request Body:**
-  ```json
-  {
-    "title": "Job Title",
-    "description": "Job Description",
-    "location": "Job Location",
-    "salary": 60000
-  }
-  ```
-
-  **Response:**
-  ```json
-  {
-    "id": 1,
-    "title": "Job Title",
-    "description": "Job Description",
-    "location": "Job Location",
-    "salary": 60000,
-    "companyId": 1
-  }
-  ```
-
-- **Get All Jobs for a Company:**
-  ```http
-  GET /api/v1/companies/{companyId}/jobs
-  ```
-  Retrieves a list of all jobs for a specific company.
-
-  **Response:**
-  ```json
-  [
-    {
-      "id": 1,
-      "title": "Job Title",
-      "description": "Job Description",
-      "location": "Job Location",
-      "salary": 60000,
-      "companyId": 1
-    },
-    ...
-  ]
-  ```
-
-- **Get Job by ID:**
-  ```http
-  GET /api/v1/jobs/{jobId}
-  ```
-  Retrieves the details of a specific job by its ID.
-
-  **Response:**
-  ```json
-  {
-    "id": 1,
-    "title": "Job Title",
-    "description": "Job Description",
-    "location": "Job Location",
-    "salary": 60000,
-    "companyId": 1
-  }
-  ```
-
-- **Update Job:**
-  ```http
-  PUT /api/v1/jobs/{jobId}
-  ```
-  Updates the details of a specific job by its ID.
-
-  **Request Body:**
-  ```json
-  {
-    "title": "Updated Job Title",
-    "description": "Updated Job Description",
-    "location": "Updated Job Location",
-    "salary": 65000
-  }
-  ```
-
-  **Response:**
-  ```json
-  {
-    "id": 1,
-    "title": "Updated Job Title",
-    "description": "Updated Job Description",
-    "location": "Updated Job Location",
-    "salary": 65000,
-    "companyId": 1
-  }
-  ```
-
-- **Delete Job:**
-  ```http
-  DELETE /api/v1/jobs/{jobId}
-  ```
-  Deletes a specific job by its ID.
-
-  **Response:**
-  ```json
-  {
-    "message": "Job deleted successfully."
-  }
-  ```
+- `GET /jobs`: Retrieve all job listings.
+- `POST /jobs`: Create a new job listing.
+- `GET /jobs/{id}`: Retrieve details of a specific job.
+- `PUT /jobs/{id}`: Update a job listing.
+- `DELETE /jobs/{id}`: Delete a job listing.
 
 ### Review Endpoints
 
-- **Create Review:**
-  ```http
-  POST /api/v1/companies/{companyId}/reviews
-  ```
-  Creates a new review for a specific company.
-
-  **Request Body:**
-  ```json
-  {
-    "rating": 5,
-    "comment": "Great company to work for!"
-  }
-  ```
-
-  **Response:**
-  ```json
-  {
-    "id": 1,
-    "rating": 5,
-    "comment": "Great company to work for!",
-    "companyId": 1
-  }
-  ```
-
-- **Get All Reviews for a Company:**
-  ```http
-  GET /api/v1/companies/{companyId}/reviews
-  ```
-  Retrieves a list of all reviews for a specific company.
-
-  **Response:**
-  ```json
-  [
-    {
-      "id
-
-": 1,
-      "rating": 5,
-      "comment": "Great company to work for!",
-      "companyId": 1
-    },
-    ...
-  ]
-  ```
-
-- **Get Review by ID:**
-  ```http
-  GET /api/v1/reviews/{reviewId}
-  ```
-  Retrieves the details of a specific review by its ID.
-
-  **Response:**
-  ```json
-  {
-    "id": 1,
-    "rating": 5,
-    "comment": "Great company to work for!",
-    "companyId": 1
-  }
-  ```
-
-- **Update Review:**
-  ```http
-  PUT /api/v1/reviews/{reviewId}
-  ```
-  Updates the details of a specific review by its ID.
-
-  **Request Body:**
-  ```json
-  {
-    "rating": 4,
-    "comment": "Good company to work for."
-  }
-  ```
-
-  **Response:**
-  ```json
-  {
-    "id": 1,
-    "rating": 4,
-    "comment": "Good company to work for.",
-    "companyId": 1
-  }
-  ```
-
-- **Delete Review:**
-  ```http
-  DELETE /api/v1/reviews/{reviewId}
-  ```
-  Deletes a specific review by its ID.
-
-  **Response:**
-  ```json
-  {
-    "message": "Review deleted successfully."
-  }
-  ```
-
-## Database Schema
-
-The database schema is designed to support the relationships between companies, jobs, and reviews. Below is a simplified version of the schema.
-
-### Companies Table
-| Field         | Type    | Description                  |
-|---------------|---------|------------------------------|
-| id            | INT     | Primary Key                  |
-| name          | VARCHAR | Name of the company          |
-| address       | VARCHAR | Address of the company       |
-| email         | VARCHAR | Contact email of the company |
-
-### Jobs Table
-| Field         | Type    | Description                  |
-|---------------|---------|------------------------------|
-| id            | INT     | Primary Key                  |
-| title         | VARCHAR | Title of the job             |
-| description   | TEXT    | Description of the job       |
-| location      | VARCHAR | Location of the job          |
-| salary        | DECIMAL | Salary for the job           |
-| company_id    | INT     | Foreign Key to Companies     |
-
-### Reviews Table
-| Field         | Type    | Description                  |
-|---------------|---------|------------------------------|
-| id            | INT     | Primary Key                  |
-| rating        | INT     | Rating for the company       |
-| comment       | TEXT    | Comment about the company    |
-| company_id    | INT     | Foreign Key to Companies     |
-
+- `GET /reviews`: Retrieve all reviews.
+- `POST /reviews`: Create a new review.
+- `GET /reviews/{id}`: Retrieve details of a specific review.
+- `PUT /reviews/{id}`: Update a review.
+- `DELETE /reviews/{id}`: Delete a review.
 
 ## Contributing
 
-Contributions are welcome! If you have suggestions for improvements or new features, please fork the repository and create a pull request with your changes. Make sure to follow the established coding standards and include tests for any new functionality.
+We welcome contributions! Please follow these guidelines:
+
+1. Fork the repository.
+2. Create a feature branch (`git checkout -b feature/new-feature`).
+3. Commit your changes with descriptive messages (`git commit -m 'Add new feature'`).
+4. Push to the branch (`git push origin feature/new-feature`).
+5. Submit a Pull Request, and our team will review your contribution.
 
 ## License
 
-This project is licensed under the MIT License. See the LICENSE file for more details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
