@@ -35,7 +35,35 @@ services:
     image: openzipkin/zipkin
     container_name: zipkin
     ports:
-      - 9411:9411
+      - "9411:9411"
+    networks:
+      - postgres
+    restart: unless-stopped
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - postgres
+    restart: unless-stopped
+
+  # Uncomment and configure the 'app' service if needed
+  # app:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   image: jobcompanyreview-app
+  #   container_name: jobcompanyreview_container
+  #   ports:
+  #     - "8080:8080"
+  #   networks:
+  #     - postgres
+  #   depends_on:
+  #     - postgres
+  #   restart: unless-stopped
 
 networks:
   postgres:
