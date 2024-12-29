@@ -13,7 +13,7 @@
 
 ## Overview
 
-This REST API is designed to manage job listings and reviews for various companies, utilizing a microservices architecture. Built with modern development practices, the API ensures scalability, maintainability, and fault tolerance, offering comprehensive endpoints for managing companies, jobs, and associated reviews.
+This **Microservices-based REST API**, built with **Java 17** and **Spring Boot**, manages job listings, companies, and reviews for various companies. Each service is independently developed, ensuring **scalability**, **maintainability**, and **fault tolerance**. The API offers **CRUD operations** and uses a **microservices architecture** for efficient handling of resources. Integrated with tools like **Spring Cloud**, **RabbitMQ**, and **Zipkin**, the system supports **service discovery**, **asynchronous communication**, and **distributed tracing**.
 
 ## Table of Contents
 
@@ -36,25 +36,25 @@ This REST API is designed to manage job listings and reviews for various compani
 - **Company Management**: CRUD operations for companies.
 - **Job Management**: CRUD operations for jobs within a company.
 - **Review Management**: CRUD operations for reviews related to a company.
-- **Service Discovery**: Seamless service registration and discovery using Eureka.
-- **Load Balancing**: Intelligent routing and load balancing with Spring Cloud.
+- **Service Discovery**: Seamless service registration and discovery using [Eureka](https://spring.io/projects/spring-cloud).
+- **Load Balancing**: Intelligent routing and load balancing with [Spring Cloud](https://spring.io/projects/spring-cloud).
 - **Fault Tolerance**: Resilient microservices with retry mechanisms and circuit breakers.
-- **Distributed Tracing**: Integrated Zipkin for monitoring and tracing.
+- **Distributed Tracing**: Integrated [Zipkin](https://zipkin.io/) for monitoring and tracing.
 
 ## Technologies Used
 
-- **Java 17**: Primary programming language.
-- **Spring Boot**: Framework for building robust and scalable REST APIs.
-- **Spring Cloud Netflix Eureka**: Service registry and discovery.
-- **Spring Cloud Gateway**: API Gateway for routing and filtering requests.
-- **RabbitMQ**: Message broker for asynchronous communication.
-- **MySQL/PostgreSQL**: Relational database management.
-- **H2 Database**: In-memory database for development and testing.
-- **JPA/Hibernate**: ORM for database interactions.
-- **Maven**: Dependency management and build automation.
-- **Lombok**: Simplifies Java code by reducing boilerplate.
-- **Docker**: Containerization for consistent environments.
-- **Zipkin**: Distributed tracing for monitoring microservices.
+- **[Java 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)**: Primary programming language.
+- **[Spring Boot](https://spring.io/projects/spring-boot)**: Framework for building robust and scalable REST APIs.
+- **[Spring Cloud Netflix Eureka](https://spring.io/projects/spring-cloud-netflix)**: Service registry and discovery.
+- **[Spring Cloud Gateway](https://spring.io/projects/spring-cloud-gateway)**: API Gateway for routing and filtering requests.
+- **[RabbitMQ](https://www.rabbitmq.com/)**: Message broker for asynchronous communication.
+- **[MySQL](https://www.mysql.com/)** or **[PostgreSQL](https://www.postgresql.org/)**: Relational database management.
+- **[H2 Database](https://www.h2database.com/)**: In-memory database for development and testing.
+- **[JPA/Hibernate](https://hibernate.org/)**: ORM for database interactions.
+- **[Maven](https://maven.apache.org/)**: Dependency management and build automation.
+- **[Lombok](https://projectlombok.org/)**: Simplifies Java code by reducing boilerplate.
+- **[Docker](https://www.docker.com/)**: Containerization for consistent environments.
+- **[Zipkin](https://zipkin.io/)**: Distributed tracing for monitoring microservices.
 
 ## Architecture
 
@@ -63,7 +63,7 @@ The system is composed of independent microservices, each responsible for a spec
 - **Company Service**: Handles company-related operations, including company details and job associations.
 - **Job Service**: Manages job listings, including job creation, updates, and associations with companies.
 - **Review Service**: Manages user reviews of companies, integrating with job data.
-- **Service Registry**: Manages dynamic service registration and discovery using Eureka.
+- **Service Registry**: Manages dynamic service registration and discovery using [Eureka](https://spring.io/projects/spring-cloud).
 - **API Gateway**: Routes external requests to the appropriate microservice, handling load balancing and security.
 - **RabbitMQ**: Enables asynchronous communication between services, enhancing scalability and resilience.
 
@@ -71,35 +71,35 @@ The system is composed of independent microservices, each responsible for a spec
 
 ### Prerequisites
 
-- Java 17
-- Maven
-- MySQL or PostgreSQL (for persistent storage)
-- Docker (optional, for containerized deployments)
+- **Java 17**: Download from [Oracle](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html).
+- **Maven**: Download from [Apache Maven](https://maven.apache.org/download.cgi).
+- **MySQL or PostgreSQL**: Install [MySQL](https://dev.mysql.com/downloads/) or [PostgreSQL](https://www.postgresql.org/download/).
+- **Docker (optional)**: Download from [Docker](https://www.docker.com/products/docker-desktop).
 
 ### Installation
 
-1. **Clone the repository:**
-   ```sh
+1. **Clone the repository**:
+   ```bash
    git clone https://github.com/Mansoor-P/jobsmicroservices.git
    cd jobsmicroservices
    ```
 
-2. **Configure the databases:**
+2. **Configure the databases**:
    Update the `application.properties` or `application.yml` files in each service with your database credentials.
 
-3. **Build and package each service:**
-   ```sh
+3. **Build and package each service**:
+   ```bash
    mvn clean install
    ```
 
-4. **Start the Service Registry:**
-   ```sh
+4. **Start the Service Registry**:
+   ```bash
    cd service-registry
    mvn spring-boot:run
    ```
 
-5. **Start the microservices:**
-   ```sh
+5. **Start the microservices**:
+   ```bash
    cd ../company-service
    mvn spring-boot:run
 
@@ -114,9 +114,9 @@ The system is composed of independent microservices, each responsible for a spec
 
 ## Deployment
 
-To deploy the microservices architecture, Docker can be used for containerization. Alternatively, you can deploy each service to your cloud provider of choice (e.g., AWS, Azure, GCP).
+To deploy the microservices architecture, Docker can be used for containerization. Alternatively, you can deploy each service to your cloud provider of choice (e.g., [AWS](https://aws.amazon.com/), [Azure](https://azure.microsoft.com/en-us/), [GCP](https://cloud.google.com/)).
 
-- **Docker Compose**: Consider using Docker Compose for local deployment. Define services, networks, and volumes to manage the entire stack.
+- **Docker Compose**: Consider using [Docker Compose](https://docs.docker.com/compose/) for local deployment. Define services, networks, and volumes to manage the entire stack.
 
 ## API Endpoints
 
@@ -156,4 +156,4 @@ We welcome contributions! Please follow these guidelines:
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the [MIT License](LICENSE) - see the [LICENSE](LICENSE) file for details.
